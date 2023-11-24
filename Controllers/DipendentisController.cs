@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.Blogic.Authentication;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
+    [BasicAutorizationAttributes]
     [Route("api/[controller]")]
     [ApiController]
     public class DipendentisController : ControllerBase

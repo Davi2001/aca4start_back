@@ -1,6 +1,9 @@
 
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
+using WebApplication1.Blogic.Authentication;
 using WebApplication1.Models;
 
 namespace WebApplication1
@@ -29,7 +32,11 @@ namespace WebApplication1
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddAuthentication("BasicAuthentication").AddScheme<AuthenticationSchemeOptions,BasicAuthenticationHandler>("BasicAuthentication",null);
+            builder.Services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("BasicAuthentication", new AuthorizationPolicyBuilder("BasicAuthentication").RequireAuthenticatedUser().Build());
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -40,7 +47,7 @@ namespace WebApplication1
             }
 
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseCors("CarsPolicy");
             app.UseAuthorization();
 
